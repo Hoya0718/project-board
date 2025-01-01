@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div th:replace="~{/fragments/hd.html::hdbar}"></div>
+<h1>게시물 수정</h1>
+<h2 th:text="${post}"></h2>
+<form th:action="@{/post/modify/{id} (id = ${post.id})}" method="POST">
+    <ul>
+        <li>
+            <div>
+                <span>제목을 입력하지 않으시면 내용의 일부를 잘라내어 제목을 자동으로 만들어 줍니다.</span>
+            </div>
+        </li>
+        <li>
+            <div>
+                제목 : <input type="text" th:value="${post.title}" name="title" placeholder="제목"/>
+            </div>
+        </li>
+        <li>
+            <div>
+                <h4>내용</h4>
+                <input type="text" th:value="${post.content}" name="content"/>
+            </div>
+        </li>
+        <li>
+            <div>
+                <button type="submit">글 수정</button>
+            </div>
+        </li>
+    </ul>
+</form>
+<footer>
+    <div th:replace="~{/fragments/ft.html::ftbar}"></div>
+</footer>
+</body>
+</html>

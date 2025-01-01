@@ -8,6 +8,7 @@
     <title>Document</title>
 </head>
 <body>
+<div th:replace="~{/fragments/hd.html::hdbar}"></div>
 <h1>Post</h1>
 <h2 th:text="${post}"></h2>
 
@@ -49,5 +50,8 @@
     </ul>
 </div>
 
+<footer>
+    <div th:replace="~{/fragments/ft.html::ftbar}"></div>
+</footer>
 </body>
 </html>

@@ -8,7 +8,7 @@ import org.boot.projectboard.posts.Repository.PostsRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -19,19 +19,32 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final PostsRepository postsRepository;
 
-    @GetMapping("/layout/board/")
-    public String board(@RequestParam(value = "post", required = false) String post, Model model) {
-        if (post != null) {
-            System.out.println("받고실행"+post);
-            model.addAttribute("post", post);
+    @GetMapping("/layout/board")
+    public String boardDefault() {
+        return "layout/board";
+    }
+
+    @GetMapping("/layout/board/{post}")
+    public String board(@PathVariable("post") String post, Model model) {
+        try {
             Board board = boardRepository.findIdByPostName(post);
 
+            if (board == null) {
+                return "layout/board";
+            }
+
             List<Posts> posts = postsRepository.findAllByBoardId(board.getId());
+
+            // board 테이블의 해당되는 id찾기
+            model.addAttribute("post", post);
+            // post 테이블의 id에 해당되는 값 전부 가져오기
             model.addAttribute("posts", posts);
+
             return "layout/posts";
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "layout/error";
         }
-        return "layout/board";
     }
 }

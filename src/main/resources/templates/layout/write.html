@@ -8,6 +8,7 @@
     <title>Document</title>
 </head>
 <body>
+<div th:replace="~{/fragments/hd.html::hdbar}"></div>
 <h1 th:text="${post}"></h1>
 <form action="/write" method="post">
 <ul>
@@ -35,7 +36,11 @@
 </ul>
     <input type="hidden" name="post" th:value="${post}"/>
     <input type="hidden" name="user_id" value="1"/>
-    <input type="hidden" name="board_id" value="1"/>
+    <input type="hidden" name="board_id" th:value="${board_id}"/>
 </form>
+
+<footer>
+    <div th:replace="~{/fragments/ft.html::ftbar}"></div>
+</footer>
 </body>
 </html>

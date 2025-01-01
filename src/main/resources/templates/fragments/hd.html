@@ -1,13 +1,28 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+<div class="hd" th:fragment="hdbar">
     <h1>HD</h1>
-</body>
-</html>
+    <div style="display: inline-block;">
+        <div>
+            <a href="/">첫 페이지로</a>
+        </div>
+        <div>
+            <a href="/layout/board">메인으로</a>
+        </div>
+    </div>
+    <div>
+        <a href="/layout/board/freeBoard">자유게시판</a>
+    </div>
+    <div>
+        <a href="/layout/board/humorBoard">유머게시판</a>
+    </div>
+    <div>
+        <a href="/layout/board/surveyBoard">설문게시판</a>
+    </div>
+    <div>
+        <a href="/layout/board/quizBoard">퀴즈게시판</a>
+    </div>
+    <div>
+        <a href="/layout/board/photoBoard">사진게시판</a>
+    </div>
+</div>
+<hr/>
+</div>

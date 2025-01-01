@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -27,9 +26,10 @@ public class PostsController {
     @GetMapping("/write/{post}")
     public String write(@PathVariable("post") String post, Model model) {
         if (post != null) {
-            System.out.println("이것도 실행");
-            System.out.println(post);
             model.addAttribute("post", post); // 모델에 post 추가
+            Board board = boardRepository.findIdByPostName(post);
+            Integer board_id = board.getId();
+            model.addAttribute("board_id", board_id);
             return "layout/write"; // 해당 post가 있을 때 'write' 페이지로
         }
         return "layout/board"; // post가 없으면 'board' 페이지로
@@ -72,25 +72,36 @@ public class PostsController {
         return "layout/post";
     }
 
-    @PostMapping("/post/modify/{id}")
+    @GetMapping("/post/modify/{id}")
     public String modifyPost(@PathVariable("id") Integer id, Model model) throws UnsupportedEncodingException {
         Optional<Posts> optional = postsRepository.findById(id);
-        String postName = boardRepository.findPostNameById(id);
         if(optional.isPresent()) {
             Posts posts = optional.get();
-            posts.setTitle(postName);
             model.addAttribute("post", posts);
-            return "redirect:/write/" + postName;
+            return "layout/modify";
         }
-        return "/layout/post";
+        return "layout/post";
+    }
+
+    @PostMapping("/post/modify/{id}")
+    public String modifiedPost(@PathVariable("id") Integer id, @RequestParam("title")String title, @RequestParam("content")String content) {
+
+        Optional<Posts> posts = postsRepository.findById(id);
+        if(posts.isPresent()) {
+            posts.get().setTitle(title);
+            posts.get().setContent(content);
+            postsRepository.save(posts.get());
+            return "redirect:/post/view/" + id;
+        }
+        return "redirect:/post/view/" + id;
     }
 
     @PostMapping("/post/delete/{id}")
     public String deletePost(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
-        String postName = boardRepository.findPostNameById(id);
+        Posts posts = postsRepository.findBoardIdById(id);
         postsRepository.deleteById(id);
-        redirectAttributes.addAttribute("post", postName);
 
-        return "redirect:/layout/board/{post}";
+        String postName = posts.getBoard().getPostName().trim();
+        return "redirect:/layout/board/"+postName;
     }
 }

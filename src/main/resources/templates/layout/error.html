@@ -9,17 +9,8 @@
 </head>
 <body>
 <div th:replace="~{/fragments/hd.html::hdbar}"></div>
-<h1 th:text="${post.id}"></h1>
-<p th:text="${post.title}"></p>
-<span th:text="${post.content}"></span>
-
-<form th:action="@{/post/modify/{id} (id=${post.id})}" method="GET">
-    <button type="submit">수정</button>
-</form>
-<form th:action="@{/post/delete/{id} (id=${post.id})}" method="POST">
-    <button type="submit">삭제</button>
-</form>
-
+<h1>Error</h1>
+<a href="/layout/board/">게시판 돌아가기</a>
 <footer>
     <div th:replace="~{/fragments/ft.html::ftbar}"></div>
 </footer>
