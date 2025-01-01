@@ -5,35 +5,54 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CKEditor 4.22.1 버전 사용 (무료 마지막 버전) -->
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <title>Document</title>
+    <script>
+        window.onload = function() {
+            CKEDITOR.replace('bo_content', {
+                height: 300,
+                toolbar: [
+                    ['Font', 'FontSize'],
+                    ['Bold', 'Italic', 'Underline', 'Strike'],
+                    ['TextColor', 'BGColor'],
+                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                    ['NumberedList', 'BulletedList'],
+                    ['Image', 'Table'],
+                    ['Source']
+                ],
+                removeButtons: 'Subscript,Superscript'
+            });
+        };
+    </script>
 </head>
 <body>
 <div th:replace="~{/fragments/hd.html::hdbar}"></div>
 <h1 th:text="${post}"></h1>
 <form action="/write" method="post">
-<ul>
-    <li>
-        <div>
-            <span>제목을 입력하지 않으시면 내용의 일부를 잘라내어 제목을 자동으로 만들어 줍니다.</span>
-        </div>
-    </li>
-    <li>
-        <div>
-            제목 : <input type="text" name="title" placeholder="제목"/>
-        </div>
-    </li>
-    <li>
-        <div>
-            <h4>내용</h4>
-            <input type="text" name="content"/>
-        </div>
-    </li>
-    <li>
-        <div>
-            <button type="submit">글 작성</button>
-        </div>
-    </li>
-</ul>
+    <ul>
+        <li>
+            <div>
+                <span>제목을 반드시 입력해주세요.</span>
+            </div>
+        </li>
+        <li>
+            <div>
+                제목 : <input type="text" name="title" required placeholder="제목"/>
+            </div>
+        </li>
+        <li>
+            <div>
+                <h4>내용</h4>
+                <textarea id="bo_content" rows="10" required name="content"></textarea>
+            </div>
+        </li>
+        <li>
+            <div>
+                <button type="submit">글 작성</button>
+            </div>
+        </li>
+    </ul>
     <input type="hidden" name="post" th:value="${post}"/>
     <input type="hidden" name="user_id" value="1"/>
     <input type="hidden" name="board_id" th:value="${board_id}"/>
