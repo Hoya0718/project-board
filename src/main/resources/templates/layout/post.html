@@ -11,7 +11,7 @@
 <div th:replace="~{/fragments/hd.html::hdbar}"></div>
 <h1 th:text="${post.id}"></h1>
 <p th:text="${post.title}"></p>
-<span th:text="${post.content}"></span>
+<span th:utext="${post.content}"></span>
 
 <form th:action="@{/post/modify/{id} (id=${post.id})}" method="GET">
     <button type="submit">수정</button>

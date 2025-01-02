@@ -1,6 +1,5 @@
 package org.boot.projectboard.posts.Controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.boot.projectboard.board.Entity.Board;
 import org.boot.projectboard.board.Repository.BoardRepository;

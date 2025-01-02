@@ -17,7 +17,7 @@ public class Posts {
 
     @Column(nullable = false)
     private String title;
-
+    
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

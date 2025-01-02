@@ -5,13 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- CKEditor 4.22.1 버전 사용 (무료 마지막 버전) -->
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <title>Document</title>
     <script>
         window.onload = function() {
             CKEDITOR.replace('bo_content', {
-                height: 300,
+                height: 500,
+                filebrowserUploadUrl: '/adm/fileupload.do', // 파일 업로드 URL
                 toolbar: [
                     ['Font', 'FontSize'],
                     ['Bold', 'Italic', 'Underline', 'Strike'],
