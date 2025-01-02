@@ -1,0 +1,18 @@
+#layout-main {
+    display: flex; /* Flexbox 활성화 */
+    justify-content: space-between; /* 좌우로 간격 분배 */
+    align-items: stretch; /* 높이를 동일하게 맞춤 */
+    height: 100vh; /* 부모 요소 높이 지정 (필요에 따라 설정) */
+}
+
+#layout-board {
+    border: 1px solid red;
+    width: 80%; /* 넓이 조정 */
+    height: 100%; /* 부모 높이에 맞춤 */
+}
+
+#layout-login {
+    border: 1px solid blue;
+    width: 20%; /* 넓이 조정 */
+    height: 100%; /* 부모 높이에 맞춤 */
+}

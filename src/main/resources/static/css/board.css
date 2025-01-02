@@ -1,0 +1,14 @@
+#boardContainer {
+    display: flex;
+    flex-wrap: wrap; /* 항목들이 자동으로 줄 바꿈되도록 설정 */
+    gap: 20px; /* 항목 간의 간격 */
+}
+
+.new_con {
+    flex-grow: 0; /* 기본적으로 다른 항목은 공간을 차지하지 않음 */
+    flex-basis: calc(50% - 10px); /* 두 항목이 한 줄에 배치되도록 기본 크기 설정 */
+}
+
+.new_con.last {
+    flex-basis: 100%; /* 마지막 항목은 한 줄 전체를 차지하도록 설정 */
+}

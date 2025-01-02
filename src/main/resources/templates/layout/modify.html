@@ -27,7 +27,7 @@
     </script>
 </head>
 <body>
-<div th:replace="~{/fragments/hd.html::hdbar}"></div>
+<div th:replace="~{/fragments/nav.html::hdbar}"></div>
 <h1>게시물 수정</h1>
 <h2 th:text="${post}"></h2>
 <form th:action="@{/post/modify/{id} (id = ${post.id})}" method="POST">

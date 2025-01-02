@@ -11,4 +11,8 @@ public class IndexController {
         return "forward:/index.html";
     }
 
+    @GetMapping("/layout")
+    public String layout() {
+        return "layout.html";
+    }
 }

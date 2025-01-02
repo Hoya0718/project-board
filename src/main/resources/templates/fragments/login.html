@@ -1,0 +1,22 @@
+<!-- 로그인 상태 X -->
+<th:block th:if="${}">
+<div class="login" th:fragment="loginbar">
+    <div>
+        <form action="/login" method="POST">
+            ID : <input type="text" required><br>
+            PW : <input type="password" required>
+            <button type="submit">로그인</button>
+        </form>
+    </div>
+</div>
+</th:block>
+
+<!-- 로그인 상태 O -->
+<th:block th:if="${}">
+    <div class="login" th:fragment="loginbar">
+        <div>
+            <span>님 반가워요</span>
+        </div>
+    </div>
+</th:block>
+

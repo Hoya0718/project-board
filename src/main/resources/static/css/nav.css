@@ -1,0 +1,4 @@
+#nav-con{
+    display: flex; /* 항목들을 한 줄로 배치 */
+    gap: 20px; /* 항목 간 간격 설정 */
+}
