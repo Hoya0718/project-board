@@ -1,0 +1,42 @@
+<div class="tposts" th:fragment="tpostsbar">
+    <h1>Post</h1>
+    <h2 th:text="${post}"></h2>
+
+    <select>
+        <option>1</option>
+        <option>2</option>
+    </select>
+
+    <a th:href="@{/write/{post} (post = ${post})}">글쓰기</a>
+    <div>
+        <ul>
+            <li>
+                <span>제목</span>
+                <span>
+                <span>작성자</span>
+                <span>작성일</span>
+                <span>추천</span>
+                <span>조회</span>
+            </span>
+            </li>
+            <li th:if="${posts != null and posts.size() > 0}" th:each="post : ${posts}">
+                <a th:href="@{/post/view/{id}(id = ${post.id})}"><span th:text="${post.title}"></span></a>
+                <span>
+                <span>1</span>
+                <span>1</span>
+                <span>1</span>
+                <span>1</span>
+            </span>
+            </li>
+            <li th:unless="${posts != null and posts.size() > 0}">
+                <span>게시물이 존재하지 않습니다.</span>
+                <span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -40,7 +40,7 @@ public class BoardController {
             // post 테이블의 id에 해당되는 값 전부 가져오기
             model.addAttribute("posts", posts);
 
-            return "layout/posts";
+            return "layout/tposts :: tpostsbar";
 
         } catch (Exception e) {
             e.printStackTrace();
