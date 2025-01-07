@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(html => {
                 layoutBoard.innerHTML = html;
                 // 컨텐츠 로드 후 버튼 이벤트 다시 등록
-                attachButtonEvents();
             })
             .catch(error => console.error('Error: ', error));
     };

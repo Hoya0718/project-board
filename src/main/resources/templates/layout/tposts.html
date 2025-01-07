@@ -10,7 +10,7 @@
     <a th:href="@{/write/{post} (post = ${post})}">글쓰기</a>
     <div>
         <ul>
-            <li>
+            <li class="tposts-li">
                 <span>제목</span>
                 <span>
                 <span>작성자</span>
@@ -20,7 +20,7 @@
             </span>
             </li>
             <li th:if="${posts != null and posts.size() > 0}" th:each="post : ${posts}">
-                <a th:href="@{/post/view/{id}(id = ${post.id})}"><span th:text="${post.title}"></span></a>
+                <button class="tposts-button" th:data-post="${post.id}" th:text="${post.title}"></button>
                 <span>
                 <span>1</span>
                 <span>1</span>
@@ -30,12 +30,6 @@
             </li>
             <li th:unless="${posts != null and posts.size() > 0}">
                 <span>게시물이 존재하지 않습니다.</span>
-                <span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </span>
             </li>
         </ul>
     </div>

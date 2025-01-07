@@ -1,0 +1,12 @@
+<div class="tpost" th:fragment="tpostbar">
+    <h1 th:text="${post.id}"></h1>
+    <p th:text="${post.title}"></p>
+    <span th:utext="${post.content}"></span>
+
+    <form th:action="@{/post/modify/{id} (id=${post.id})}" method="GET">
+        <button type="submit">수정</button>
+    </form>
+    <form th:action="@{/post/delete/{id} (id=${post.id})}" method="POST">
+        <button type="submit">삭제</button>
+    </form>
+</div>
