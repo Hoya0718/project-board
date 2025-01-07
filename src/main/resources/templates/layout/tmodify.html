@@ -1,0 +1,29 @@
+<div class="tboard" th:fragment="tboardbar">
+    <h1>게시물 수정</h1>
+    <h2 th:text="${post}"></h2>
+    <form th:action="@{/post/modify/{id} (id = ${post.id})}" method="POST">
+        <ul>
+            <li>
+                <div>
+                    <span>제목을 입력하지 않으시면 내용의 일부를 잘라내어 제목을 자동으로 만들어 줍니다.</span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    제목 : <input type="text" th:value="${post.title}" name="title" placeholder="제목"/>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h4>내용</h4>
+                    <textarea id="bo_content" th:text="${post.content}" rows="10" required name="content"></textarea>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <button type="submit">글 수정</button>
+                </div>
+            </li>
+        </ul>
+    </form>
+</div>

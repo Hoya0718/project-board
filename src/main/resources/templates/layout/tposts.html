@@ -20,7 +20,7 @@
             </span>
             </li>
             <li th:if="${posts != null and posts.size() > 0}" th:each="post : ${posts}">
-                <button class="tposts-button" th:data-post="${post.id}" th:text="${post.title}"></button>
+                <button class="tposts-button" th:data-tposts="${post.id}" th:text="${post.title}"></button>
                 <span>
                 <span>1</span>
                 <span>1</span>

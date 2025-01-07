@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const layoutBoard = document.getElementById('layout-board');
 
     const loadPostContent = (id) => {
-        fetch(`/post/view/rest/${id}`)
+        fetch(`/post/modify/rest/${id}`)
             .then(res => res.text())
             .then(html => {
                 layoutBoard.innerHTML = html;

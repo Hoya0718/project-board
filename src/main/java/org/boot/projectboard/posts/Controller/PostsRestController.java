@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -21,10 +22,20 @@ public class PostsRestController {
         if(optional.isPresent()) {
             Posts posts = optional.get();
             model.addAttribute("post", posts);
-            System.out.println("실행했다.");
             return "layout/tpost :: tpostbar";
         }
         model.addAttribute("postId", id);
         return "layout/tpost :: tpostbar";
+    }
+
+    @GetMapping("/post/modify/rest/{id}")
+    public String modifyPost(@PathVariable("id") Integer id, Model model) throws UnsupportedEncodingException {
+        Optional<Posts> optional = postsRepository.findById(id);
+        if(optional.isPresent()) {
+            Posts posts = optional.get();
+            model.addAttribute("post", posts);
+            return "layout/modify";
+        }
+        return "layout/post";
     }
 }
