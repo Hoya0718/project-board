@@ -29,13 +29,13 @@ public class PostsRestController {
     }
 
     @GetMapping("/post/modify/rest/{id}")
-    public String modifyPost(@PathVariable("id") Integer id, Model model) throws UnsupportedEncodingException {
+    public String modifyPost(@PathVariable Integer id, Model model) throws UnsupportedEncodingException {
         Optional<Posts> optional = postsRepository.findById(id);
         if(optional.isPresent()) {
             Posts posts = optional.get();
             model.addAttribute("post", posts);
-            return "layout/modify";
+            return "layout/tmodify :: tmodifybar";
         }
-        return "layout/post";
+        return "layout/tpost :: tpostbar";
     }
 }

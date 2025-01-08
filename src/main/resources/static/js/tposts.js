@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (event) => {
         if (event.target.classList.contains("tposts-button")) {
             const id = event.target.dataset.tposts;
-            history.pushState({id: id}, '', `/board/${id}`);
+            history.pushState({id: id}, '', `layout/board/rest/${id}`);
             loadPostContent(id);
         }
     });
