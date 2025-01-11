@@ -1,0 +1,31 @@
+<div class="twrite" th:fragment="twritebar">
+    <h1 th:text="${post}"></h1>
+    <form action="/write" method="post">
+        <ul>
+            <li>
+                <div>
+                    <span>제목을 반드시 입력해주세요.</span>
+                </div>
+            </li>
+            <li>
+                <div>
+                    제목 : <input type="text" name="title" required placeholder="제목"/>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h4>내용</h4>
+                    <textarea id="bo_content" rows="10" required name="content"></textarea>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <button type="submit">글 작성</button>
+                </div>
+            </li>
+        </ul>
+        <input type="hidden" name="post" th:value="${post}"/>
+        <input type="hidden" name="user_id" value="1"/>
+        <input type="hidden" name="board_id" th:value="${board_id}"/>
+    </form>
+</div>
