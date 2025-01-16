@@ -38,4 +38,10 @@ public class PostsRestController {
         }
         return "layout/tpost :: tpostbar";
     }
+
+    @GetMapping("/test1")
+    public String test1() {
+        System.out.println("실행");
+        return "layout/twrite :: twritebar";
+    }
 }
