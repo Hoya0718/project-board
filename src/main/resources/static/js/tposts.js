@@ -1,43 +1,97 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     const layoutBoard = document.getElementById('layout-board');
+    if (!layoutBoard) {
+        console.error('layout-board element not found');
+        return;
+    }
 
-    const loadPostContent = (id) => {
-        fetch(`/post/view/rest/${id}`)
-            .then(res => res.text())
-            .then(html => {
-                layoutBoard.innerHTML = html;
-            })
-            .catch(error => console.error('Error: ', error));
+    const loadPostContent = async (id) => {
+        try {
+            const response = await fetch(`/post/view/rest/${id}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const html = await response.text();
+            layoutBoard.innerHTML = html;
+
+            // CKEditor 초기화
+            initCKEditor();
+        } catch (error) {
+            console.error('게시글 로드 중 오류 발생:', error);
+            layoutBoard.innerHTML = '<p>게시글을 불러오는 중 오류가 발생했습니다.</p>';
+        }
     };
 
-    // 이벤트 델리게이션으로 수정
-    document.addEventListener("click", (event) => {
-        if (event.target.classList.contains("tposts-button")) {
-            const id = event.target.dataset.tposts;
-            history.pushState({id: id}, '', `layout/board/rest/${id}`);
+    // CKEditor 초기화 함수
+    const initCKEditor = () => {
+        const editorElement = document.getElementById('bo_content');
+        if (editorElement) {
+            if (CKEDITOR.instances['bo_content']) {
+                CKEDITOR.instances['bo_content'].destroy();
+            }
+            CKEDITOR.replace('bo_content', {
+                height: 500,
+                filebrowserUploadUrl: '/adm/fileupload.do',
+                toolbar: [
+                    ['Font', 'FontSize'],
+                    ['Bold', 'Italic', 'Underline', 'Strike'],
+                    ['TextColor', 'BGColor'],
+                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                    ['NumberedList', 'BulletedList'],
+                    ['Image', 'Table'],
+                    ['Source']
+                ],
+                removeButtons: 'Subscript,Superscript'
+            });
+        }
+    };
+
+    // 클릭 이벤트 하나로 통합
+    document.addEventListener("click", async (event) => {
+        // 게시글 버튼 클릭 처리
+        const postButton = event.target.closest('.tposts-button');
+        if (postButton) {
+            const id = postButton.dataset.tposts;
+            if (!id) {
+                console.error('게시글 ID가 없습니다');
+                return;
+            }
+            history.pushState({id}, '', `layout/board/rest/${id}`);
             loadPostContent(id);
+            return;
+        }
+
+        // 글쓰기 버튼 클릭 처리
+        if (event.target.id === 'write-button') {
+            const formData = new FormData();
+            formData.append('post', document.getElementById('post').value); //작성 제목
+            try {
+                const params = new URLSearchParams();
+                params.append('post', document.getElementById('post').value); // 쿼리 문자열로 보냄
+
+                const response = await fetch(`/test1?${params.toString()}`, {
+                    method: 'GET',  // GET 요청으로 보내는 방식
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                layoutBoard.innerHTML = html;
+
+                // CKEditor 초기화
+                initCKEditor();
+
+                console.log("글쓰기 완료");
+            } catch (error) {
+                console.error("글쓰기 중 오류 발생:", error);
+            }
         }
     });
 
     window.addEventListener("popstate", (event) => {
-        if (event.state && event.state.id) {
+        if (event.state?.id) {
             loadPostContent(event.state.id);
         }
     });
-
-    const functionWrite = () => {
-        fetch(`/test1`)
-            .then(() => {
-                console.log("실행");
-            })
-            .catch(error => console.error("Fetch Error: ", error));
-    }
-
-    // 예시: 특정 버튼 클릭 시 functionWrite 호출
-    const someButton = document.getElementById('write-button'); // 예시 버튼
-    if (someButton) {
-        someButton.addEventListener('click', functionWrite); // 버튼 클릭 시 functionWrite 호출
-    }
-
 });

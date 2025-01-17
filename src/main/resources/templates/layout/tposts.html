@@ -7,8 +7,8 @@
         <option>2</option>
     </select>
 
-    <button onclick="functionWrite()" class="write-button">글쓰기</button>
-
+    <button id="write-button">글쓰기</button>
+    <input type="hidden" id="post" th:value="${post}"/>
     <div>
         <ul>
             <li class="tposts-li">
