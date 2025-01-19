@@ -1,7 +1,8 @@
 <div class="tmodify" th:fragment="tmodifybar">
     <h1>게시물 수정</h1>
 
-    <form th:action="@{/post/modify/{id} (id = ${post.id})}" method="POST">
+    <!-- form의 action과 method 속성 제거 -->
+    <form>
         <ul>
             <li>
                 <div>
@@ -10,7 +11,7 @@
             </li>
             <li>
                 <div>
-                    제목 : <input type="text" th:value="${post.title}" name="title" placeholder="제목"/>
+                    제목 : <input type="text" th:value="${post.title}" name="title" id="title" placeholder="제목"/>
                 </div>
             </li>
             <li>
@@ -21,9 +22,11 @@
             </li>
             <li>
                 <div>
-                    <button type="submit">글 수정</button>
+                    <button type="button" id="modifyButton">글 수정</button>
                 </div>
             </li>
         </ul>
+        <!-- hidden input 추가 -->
+        <input type="hidden" th:value="${post.id}" id="post_id"/>
     </form>
 </div>

@@ -10,12 +10,10 @@ import org.boot.projectboard.posts.Repository.PostsRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -48,6 +46,19 @@ public class PostsRestController {
         return "layout/tpost :: tpostbar";
     }
 
+    @PostMapping("/post/modify/rest/{id}")
+    public String modifiedPost(@PathVariable("id") Integer id, @RequestParam("title")String title, @RequestParam("content")String content) {
+
+        Optional<Posts> posts = postsRepository.findById(id);
+        if(posts.isPresent()) {
+            posts.get().setTitle(title);
+            posts.get().setContent(content);
+            postsRepository.save(posts.get());
+            return "redirect:/post/view/" + id;
+        }
+        return "redirect:/post/view/" + id;
+    }
+
     @GetMapping("/test1")
     public String test1(@ModelAttribute PostsDTO postsDTO, Model model) {
         String post = postsDTO.getPost();
@@ -60,12 +71,39 @@ public class PostsRestController {
     }
 
     @PostMapping("/twrite")
-    public String twrite(@ModelAttribute PostsDTO postsDTO) {
-        System.out.println(postsDTO);
+    public String twrite(@ModelAttribute PostsDTO postsDTO, Model model) {
+        System.out.println("twrite 컨트롤러 실행");
 
+        User user = new User();
+        Board board = new Board();
 
-        // 수정: 리다이렉트 경로 변경
-        return "redirect:/layout/board";
+        user.setId(postsDTO.getUser_id());
+        board.setId(postsDTO.getBoard_id());
 
+        Posts posts = new Posts();
+        posts.setTitle(postsDTO.getTitle());
+        posts.setContent(postsDTO.getContent());
+        posts.setBoard(board);
+        posts.setUser(user);
+
+        postsRepository.save(posts);
+
+        // 저장 후 바로 데이터 조회
+        String post = postsDTO.getPost();
+        Board foundBoard = boardRepository.findIdByPostName(post);
+
+        if (foundBoard == null) {
+            return "layout/tboard :: tboardbar";
+        }
+
+        List<Posts> allPosts = postsRepository.findAllByBoardId(foundBoard.getId());
+
+        // Model에 데이터 추가
+        model.addAttribute("post", post);
+        model.addAttribute("posts", allPosts);
+        System.out.println("반환성공했냐?");
+        // 프래그먼트 직접 반환
+        return "layout/tposts :: tpostsbar";
     }
+
 }

@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const layoutBoard = document.getElementById('layout-board');
     if (!layoutBoard) {
         console.error('layout-board element not found');
-        return;
     }
 
+    // 게시글 내용 불러오기
     const loadPostContent = async (id) => {
         try {
             const response = await fetch(`/post/view/rest/${id}`);
@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const html = await response.text();
+
+            // layoutBoard가 동적으로 추가될 수 있으므로 이 시점에서 확인하고 설정
+            const layoutBoard = document.getElementById('layout-board');
+            if (!layoutBoard) {
+                console.error('layout-board element not found during content load');
+                return;
+            }
             layoutBoard.innerHTML = html;
 
             // CKEditor 초기화
@@ -46,9 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // 클릭 이벤트 하나로 통합
+    // 클릭 이벤트 처리
     document.addEventListener("click", async (event) => {
-        // 게시글 버튼 클릭 처리
         const postButton = event.target.closest('.tposts-button');
         if (postButton) {
             const id = postButton.dataset.tposts;
@@ -61,27 +67,32 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 글쓰기 버튼 클릭 처리
         if (event.target.id === 'write-button') {
             const formData = new FormData();
-            formData.append('post', document.getElementById('post').value); //작성 제목
+            formData.append('post', document.getElementById('post').value);
             try {
                 const params = new URLSearchParams();
-                params.append('post', document.getElementById('post').value); // 쿼리 문자열로 보냄
+                params.append('post', document.getElementById('post').value);
 
                 const response = await fetch(`/test1?${params.toString()}`, {
-                    method: 'GET',  // GET 요청으로 보내는 방식
+                    method: 'GET',
                 });
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const html = await response.text();
+
+                // layoutBoard가 동적으로 추가될 수 있으므로 이 시점에서 확인하고 설정
+                const layoutBoard = document.getElementById('layout-board');
+                if (!layoutBoard) {
+                    console.error('layout-board element not found during content load');
+                    return;
+                }
                 layoutBoard.innerHTML = html;
 
                 // CKEditor 초기화
                 initCKEditor();
-
                 console.log("글쓰기 완료");
             } catch (error) {
                 console.error("글쓰기 중 오류 발생:", error);
@@ -89,9 +100,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // 뒤로 가기 및 앞으로 가기 버튼 처리
     window.addEventListener("popstate", (event) => {
         if (event.state?.id) {
             loadPostContent(event.state.id);
         }
     });
+
+    // layout-board가 동적으로 추가되는 경우를 감지하여 처리
+    const observer = new MutationObserver(() => {
+        const layoutBoard = document.getElementById('layout-board');
+        if (layoutBoard) {
+            observer.disconnect();  // layout-board가 추가되었으므로 더 이상 감지하지 않음
+            console.log('layout-board element added');
+        }
+    });
+
+    // DOM 변화 감지 (childList: 자식 요소가 추가되거나 삭제되는 경우)
+    observer.observe(document.body, {childList: true, subtree: true});
 });

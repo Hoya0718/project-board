@@ -1,4 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 함수들을 밖으로 이동
+    function updateLayoutBoard(html) {
+        const layoutBoard = document.getElementById('layout-board');
+        console.log('layoutBoard 엘리먼트 존재여부:', !!layoutBoard);
+        console.log('받은 HTML:', html);
+
+        if (layoutBoard) {
+            layoutBoard.innerHTML = html;
+            console.log('HTML 업데이트 완료');
+        } else {
+            console.error('layoutBoard 엘리먼트를 찾을 수 없습니다');
+        }
+        initializeCKEditor();
+    }
+
+    function initializeCKEditor() {
+        if (CKEDITOR.instances.bo_content) {
+            CKEDITOR.instances.bo_content.destroy();
+        }
+        CKEDITOR.replace('bo_content');
+    }
+
     const observer = new MutationObserver(async () => {
         const submitButton = document.getElementById('submitButton');
         if (submitButton) {
@@ -8,14 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // FormData 객체 생성
                 const formData = new FormData();
-                formData.append('title', document.getElementById('title').value); //작성 제목
-                formData.append('content', content); //내용
-                formData.append('post', document.getElementById('post').value); //게시판인지 이름
-                formData.append('user_id', document.getElementById('user_id').value); //사용자가 누구인지
-                formData.append('board_id', document.getElementById('board_id').value); //게시판 번호
+                formData.append('title', document.getElementById('title').value);
+                formData.append('content', content);
+                formData.append('post', document.getElementById('post').value);
+                formData.append('user_id', document.getElementById('user_id').value);
+                formData.append('board_id', document.getElementById('board_id').value);
 
                 try {
-                    console.log(formData)
+                    console.log('폼 데이터:', Object.fromEntries(formData));
 
                     const response = await fetch('/twrite', {
                         method: 'POST',
@@ -23,40 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
 
-                    // 서버에서 HTML 응답을 받음
-                    const html = await response.text(); // HTML 형식 응답을 텍스트로 받음
-                    updateLayoutBoard(html); // 레이아웃 업데이트 후 CKEditor 초기화
-                }
-
-                catch (error) {
+                    const html = await response.text();
+                    console.log('서버에서 받은 HTML:', html);
+                    updateLayoutBoard(html);
+                } catch (error) {
                     console.error('Error:', error);
                 }
             });
 
-            // observer를 멈춥니다.
+            // 이벤트 리스너가 추가된 후 observer 중단
             observer.disconnect();
         }
     });
-
-    // 레이아웃 업데이트 및 CKEditor 초기화
-    function updateLayoutBoard(html) {
-        const layoutBoard = document.getElementById('layoutBoard');
-        if (layoutBoard) {
-            layoutBoard.innerHTML = html; // 새로운 콘텐츠로 갱신
-        }
-        initializeCKEditor(); // CKEditor 초기화
-    }
-
-    // CKEditor 초기화 함수
-    function initializeCKEditor() {
-        if (CKEDITOR.instances.bo_content) {
-            CKEDITOR.instances.bo_content.destroy(); // 기존 CKEditor 인스턴스를 파괴
-        }
-        CKEDITOR.replace('bo_content'); // CKEditor 새로 초기화
-    }
 
     // DOM의 변화를 감지하도록 설정
     observer.observe(document.body, { childList: true, subtree: true });
